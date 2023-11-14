@@ -3,6 +3,11 @@ defmodule Bigr.Server do
 
   alias Bigr.Counter
 
+  # build a child_spec function that returns a map with a name
+  def child_spec(name) do
+    %{id: name, start: {__MODULE__, :start_link, [name]}}
+  end
+
   @impl true
   def init(count) do
     {:ok, Counter.new(count)}
@@ -24,8 +29,9 @@ defmodule Bigr.Server do
     {:noreply, Counter.dec(counter)}
   end
 
-  def start_link(count) when is_integer(count) do
-    GenServer.start_link(__MODULE__, count)
+  def start_link(name) do
+    IO.puts("Starting #{name}")
+    GenServer.start_link(__MODULE__, 0, name: name)
   end
 
   def inc(pid) do

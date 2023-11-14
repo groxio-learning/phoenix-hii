@@ -8,13 +8,15 @@ defmodule Bigr.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      # Starts a worker by calling: Bigr.Worker.start_link(arg)
-      # {Bigr.Worker, arg}
+      {Bigr.Server, :cats},
+      {Bigr.Server, :dogs},
+      {Bigr.Server, :alligator},
+      {Bigr.Server, :poodle}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: Bigr.Supervisor]
+    opts = [strategy: :rest_for_one, name: :sup]
     Supervisor.start_link(children, opts)
   end
 end
