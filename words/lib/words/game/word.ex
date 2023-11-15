@@ -1,26 +1,13 @@
 defmodule Words.Game.Word do
-  defp get_index(list) do
-    Enum.with_index(list, fn guess, index -> {guess, index} end)
-  end
-
   def new(answer, guess) do
     answer_graphemes = String.graphemes(answer)
     guess_graphemes = String.graphemes(guess)
 
-    # ["t", "e"]
-    guess_graphemes_indexes = get_index(guess_graphemes)
-    answer_graphemes_indexes = get_index(answer_graphemes)
-
-    rejected_keys = guess_graphemes -- answer_graphemes
-
-    Enum.map(rejected_keys, fn guess ->
-      # what to do here?
-      # dbg(Enum.at(guess_graphemes_indexes, guess))
-    end)
+    missing_list = guess_graphemes -- answer_graphemes
 
     Enum.zip(answer_graphemes, guess_graphemes)
     |> mark_greens()
-    |> mark_blacks(rejected_keys)
+    |> mark_blacks(missing_list)
   end
 
   defp mark_greens(zipped_list) do
@@ -31,30 +18,22 @@ defmodule Words.Game.Word do
 
 
   # [{"t", :yellow}, {"a", :yellow}, {"s", :yellow}, {"t", :yellow}, {"e", :yellow}]
-  defp mark_blacks(marked_list, rejected_list) do
-    # accumulator: {marked list so far, rejected}
-    # {"t", :black}
-    # {"e", :black}
+  defp mark_blacks(marked_list, missing_list) do
+    acc = Enum.with_index(marked_list)
 
-    # initial_value = {marked_list, rejected_list}
+    Enum.reduce(missing_list, acc, &mark_one_letter_black/2)
+      |> Enum.map(fn {value, _index} -> value end)
+  end
 
+  # {{"t", :yellow}, 0}, {{"e", :yellow}, 4}
 
+  defp mark_one_letter_black(missing_letter, acc) do
+    {{l, _c}, i} =
+      Enum.find(acc, fn {{letter, color}, _index} ->
+        color == :yellow && letter == missing_letter
+      end)
 
-    rev_marked_list = Enum.reverse(marked_list)
-
-    dbg(rejected_list)
-
-    # list = rev_marked_list |> Enum.map(fn {char, color} ->
-    #   if char in rejected_list do
-    #     #rejected_list = List.delete(rejected_list, char)
-    #     {char, :black}
-    #   else
-    #     {char, color}
-    #   end
-    # end)
-
-
-    # dbg(list)
+    List.replace_at(acc, i, {{l, :black}, i})
   end
 
   def show(score) do
