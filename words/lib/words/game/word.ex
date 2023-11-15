@@ -26,7 +26,6 @@ defmodule Words.Game.Word do
   end
 
   # {{"t", :yellow}, 0}, {{"e", :yellow}, 4}
-
   defp mark_one_letter_black(missing_letter, acc) do
     {{l, _c}, i} =
       Enum.find(acc, fn {{letter, color}, _index} ->
@@ -37,8 +36,7 @@ defmodule Words.Game.Word do
   end
 
   def show(score) do
+    # use IO.ANSI color code the background
     inspect(score)
   end
-
-  # IO.ANSI color code the background
 end
