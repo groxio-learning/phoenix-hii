@@ -1,4 +1,6 @@
 defmodule Words.Game.Word do
+  alias Words.Game.Letter
+
   def new(answer, guess) do
     answer_graphemes = String.graphemes(answer)
     guess_graphemes = String.graphemes(guess)
@@ -37,6 +39,6 @@ defmodule Words.Game.Word do
 
   def show(score) do
     # use IO.ANSI color code the background
-    inspect(score)
+    Enum.map(score, &Letter.show/1)
   end
 end

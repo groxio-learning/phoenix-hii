@@ -12,10 +12,21 @@ defmodule Words.Game.Board do
     %{board | words: [word | board.words], keyboard: Keyboard.add_word(board.keyboard, word)}
   end
 
-  def score do
-    # could be either converter or reducer
-    # that accepts a board and return a list of scores
-    # list of tuples e.g {character, color}
-    # optional: do we need to track scores? / compute the score every time we make a move?
+  def show(board) do
+    """
+    #{show_words(board)}
+
+    #{show_keyboard(board)}
+    """
+  end
+
+  defp show_keyboard(board) do
+    Word.show(board.keyboard)
+  end
+
+  defp show_words(board) do
+    for word <- Enum.reverse(board.words) do
+      [Word.show(word), "\n"]
+    end
   end
 end
