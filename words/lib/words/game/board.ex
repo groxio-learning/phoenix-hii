@@ -1,13 +1,15 @@
 defmodule Words.Game.Board do
+  alias Words.Game.{Word, Keyboard}
+
   defstruct [words: [], keyboard: %{}, answer: "hello"]
 
   def new do
-    %__MODULE__{}
+    %__MODULE__{keyboard: Keyboard.new()}
   end
 
   def guess(board, word_guess) do
-    %{board | words: [word_guess | board.words]}
-    # reducer that accepts a board and a guessed word and returns a new board. the new board has gussed word added
+    word = Word.new(board.answer, word_guess)
+    %{board | words: [word | board.words], keyboard: Keyboard.add_word(board.keyboard, word)}
   end
 
   def score do
