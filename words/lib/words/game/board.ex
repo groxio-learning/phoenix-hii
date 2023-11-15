@@ -4,7 +4,11 @@ defmodule Words.Game.Board do
   defstruct [words: [], keyboard: %{}, answer: "hello"]
 
   def new do
-    %__MODULE__{keyboard: Keyboard.new()}
+    __struct__()
+  end
+
+  def new(answer) do
+    %__MODULE__{keyboard: Keyboard.new(), answer: answer}
   end
 
   def guess(board, word_guess) do

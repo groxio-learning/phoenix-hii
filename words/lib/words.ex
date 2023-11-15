@@ -3,16 +3,14 @@ defmodule Words do
   Documentation for `Words`.
   """
 
-  @doc """
-  Hello world.
+  def start_game(name) do
+    # This is a bad idea for production. We are creating a string from an atom.
+    process_name = :"#{name}"
+    DynamicSupervisor.start_child(:dsup, {Words.Game, process_name})
+  end
 
-  ## Examples
-
-      iex> Words.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  def make_move(name, word_guess) do
+    process_name = :"#{name}"
+    Words.Game.make_guess(process_name, word_guess)
   end
 end
