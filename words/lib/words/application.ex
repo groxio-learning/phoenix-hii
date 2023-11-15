@@ -7,9 +7,9 @@ defmodule Words.Application do
 
   @impl true
   def start(_type, _args) do
+    # We are changing the name of the supervisor to :dsup for expedeiency. bad idea in production.
     children = [
-      # Starts a worker by calling: Words.Worker.start_link(arg)
-      # {Words.Worker, arg}
+      {DynamicSupervisor, name: :dsup, strategy: :one_for_one}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
