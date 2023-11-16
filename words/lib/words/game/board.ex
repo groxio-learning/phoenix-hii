@@ -33,4 +33,8 @@ defmodule Words.Game.Board do
       [Word.show(word), "\n"]
     end
   end
+
+  def as_map(board) do
+    board |> Map.from_struct() |> Map.take([:keyboard, :words])
+  end
 end
