@@ -66,7 +66,7 @@ defmodule BirdleWeb.Router do
 
     get "/game", GameController, :new
     get "/playing", GameController, :play
-    post "/accept_guess", GameController, :accept_guess
+    post "/guess", GameController, :guess
 
     live_session :require_authenticated_user,
       on_mount: [{BirdleWeb.UserAuth, :ensure_authenticated}] do
