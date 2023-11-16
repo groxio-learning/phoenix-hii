@@ -10,7 +10,7 @@ defmodule Words do
   def start_game(name) do
     # This is a bad idea for production. We are creating a string from an atom.
     process_name = :"#{name}"
-    DynamicSupervisor.start_child(:dsup, {Words.Game, process_name})
+    {:ok, _pid} = DynamicSupervisor.start_child(:dsup, {Words.Game, process_name})
   end
 
   def make_move(name, word_guess) do

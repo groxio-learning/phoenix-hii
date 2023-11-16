@@ -64,7 +64,9 @@ defmodule BirdleWeb.Router do
   scope "/", BirdleWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    get "/game", GameController, :play
+    get "/game", GameController, :new
+    get "/playing", GameController, :play
+    post "/accept_guess", GameController, :accept_guess
 
     live_session :require_authenticated_user,
       on_mount: [{BirdleWeb.UserAuth, :ensure_authenticated}] do
