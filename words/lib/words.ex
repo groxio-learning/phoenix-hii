@@ -13,7 +13,6 @@ defmodule Words do
     DynamicSupervisor.start_child(:dsup, {Words.Game, process_name})
   end
 
-
   def make_move(name, word_guess) do
     process_name = :"#{name}"
     Words.Game.make_guess(process_name, word_guess)
