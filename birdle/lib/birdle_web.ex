@@ -85,6 +85,7 @@ defmodule BirdleWeb do
       import Phoenix.HTML
       # Core UI components and translation
       import BirdleWeb.CoreComponents
+      import BirdleWeb.Components.Tile
       import BirdleWeb.Gettext
 
       # Shortcut for generating JS commands
