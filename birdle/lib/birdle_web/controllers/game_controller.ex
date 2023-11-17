@@ -2,10 +2,9 @@ defmodule BirdleWeb.GameController do
   use BirdleWeb, :controller
 
   def new(%{assigns: %{current_user: user}} = conn, _params) do
-    # never do this in production
     name = user.email
 
-    pid = name |> String.to_atom() |> GenServer.whereis()
+    pid = name |> process_name() |> GenServer.whereis()
 
     if !pid do
       IO.puts("Starting a new game for #{name}")
@@ -25,5 +24,9 @@ defmodule BirdleWeb.GameController do
     name = user.email
     Words.make_move(name, guess)
     redirect(conn, to: "/playing")
+  end
+
+  defp process_name(email) do
+    Words.process_name(email)
   end
 end
