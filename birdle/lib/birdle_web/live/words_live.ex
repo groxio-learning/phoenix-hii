@@ -3,6 +3,7 @@ defmodule BirdleWeb.WordsLive do
 
   alias Words.Game.Board
   alias Words.Game.Dictionary
+  alias BirdleWeb.Guess
 
   def render(assigns) do
     ~H"""
@@ -39,7 +40,16 @@ defmodule BirdleWeb.WordsLive do
         <div></div>
       </div>
 
+      <.simple_form for={@form} id="guess" phx-submit="make-guess" phx-change="validate-guess">
+        <.input field={@form[:token]} type="hidden" />
+        <.input field={@form[:word]} type="text" />
+        <:actions>
+          <.button :if={@changeset.valid?} class="w-full">Submit</.button>
+        </:actions>
+      </.simple_form>
+
       <pre>
+        <%= @changeset |> inspect(pretty: true) %>
         <%= @keyboard |> inspect(pretty: true) %>
         <%= @words |> inspect(pretty: true) %>
       </pre>
@@ -50,8 +60,40 @@ defmodule BirdleWeb.WordsLive do
   def mount(_params, _session, socket) do
     random_answer = Dictionary.random_answer()
 
+    changeset = Guess.changeset("")
+
     board = Board.new(random_answer)
 
-    {:ok, assign(socket, game: board, words: board.words, keyboard: board.keyboard)}
+    {:ok,
+     assign(
+       socket,
+       game: board,
+       words: board.words,
+       keyboard: board.keyboard
+     )
+     |> update_changeset("")}
+  end
+
+  def handle_event("validate-guess", %{"guess" => %{"word" => word}}, socket) do
+    {:noreply, update_changeset(socket, word)}
+  end
+
+  def handle_event("make-guess", %{"guess" => %{"word" => word}}, socket) do
+    {:noreply, socket |> make_move(word) |> update_changeset("")}
+  end
+
+  defp update_changeset(socket, word) do
+    changeset =
+      word
+      |> Guess.changeset()
+      |> Map.put(:action, :validate)
+
+    assign(socket, changeset: changeset, form: to_form(changeset))
+  end
+
+  defp make_move(socket, word) do
+    new_board = Board.guess(socket.assigns.game, word)
+
+    assign(socket, game: new_board, words: new_board.words, keyboard: new_board.keyboard)
   end
 end
