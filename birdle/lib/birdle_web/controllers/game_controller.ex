@@ -21,7 +21,7 @@ defmodule BirdleWeb.GameController do
     render(conn, :play, name: name, keyboard: keyboard, words: words)
   end
 
-  def guess(%{assigns: %{current_user: user}} = conn, %{"guess" => guess} = params) do
+  def guess(%{assigns: %{current_user: user}} = conn, %{"guess" => guess}) do
     name = user.email
     Words.make_move(name, guess)
     redirect(conn, to: "/playing")
