@@ -7,8 +7,8 @@ defmodule Words.Application do
 
   @impl true
   def start(_type, _args) do
-    # We are changing the name of the supervisor to :dsup for expedeiency. bad idea in production.
     children = [
+      {Registry, keys: :unique, name: Words.Via},
       {DynamicSupervisor, name: :dsup, strategy: :one_for_one}
     ]
 

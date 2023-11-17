@@ -4,7 +4,6 @@
       <h1 class="text-lg font-semibold leading-8 text-zinc-800">
         Hello, <%= @name %>
       </h1>
-      <p class="mt-2 text-sm leading-6 text-zinc-600">World</p>
     </div>
   </header>
 
@@ -174,8 +173,8 @@
   </div>
 
   <pre>
-    <%= @name |> String.to_atom() |> GenServer.whereis() |> :sys.get_state() |> Map.get(:keyboard) |> inspect(pretty: true) %>
-    <%= @name |> String.to_atom() |> GenServer.whereis() |> :sys.get_state() |> Map.get(:words) |> inspect(pretty: true) %>
+    <%= @name |> Words.process_name() |> GenServer.whereis() |> :sys.get_state() |> Map.get(:keyboard) |> inspect(pretty: true) %>
+    <%= @name |> Words.process_name() |> GenServer.whereis() |> :sys.get_state() |> Map.get(:words) |> inspect(pretty: true) %>
   </pre>
 
   <form action="/guess" method="POST">
@@ -184,5 +183,4 @@
     <input type="hidden" name="_csrf_token" value={get_csrf_token()} />
     <button type="submit">Submit</button>
   </form>
-</div>
 </div>
