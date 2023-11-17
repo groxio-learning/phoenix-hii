@@ -15,6 +15,10 @@ defmodule Words do
     Words.Game.make_guess(process_name(email), word_guess)
   end
 
+  def show(email) do
+    Words.Game.show(process_name(email))
+  end
+
   def process_name(email) do
     {:via, Registry, {Words.Via, email}}
   end

@@ -20,8 +20,22 @@ defmodule Words.Game do
     {:reply, Board.as_map(new_state), new_state}
   end
 
+  @impl true
+  def handle_call(:show, _from, board) do
+    result =
+      board
+      |> Map.from_struct()
+      |> Map.take([:keyboard, :words])
+
+    {:reply, result, board}
+  end
+
   def start_link(name) do
     GenServer.start_link(__MODULE__, [], name: name)
+  end
+
+  def show(board_pid) do
+    GenServer.call(board_pid, :show)
   end
 
   def make_guess(board_pid, word_guess) do
