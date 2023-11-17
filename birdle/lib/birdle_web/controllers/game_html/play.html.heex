@@ -174,12 +174,15 @@
   </div>
 
   <pre>
-    <%= @name |> String.to_atom() |> GenServer.whereis() |> :sys.get_state() |> inspect(pretty: true) %>
+    <%= @name |> String.to_atom() |> GenServer.whereis() |> :sys.get_state() |> Map.get(:keyboard) |> inspect(pretty: true) %>
+    <%= @name |> String.to_atom() |> GenServer.whereis() |> :sys.get_state() |> Map.get(:words) |> inspect(pretty: true) %>
   </pre>
 
-  <form action="/accept_guess" method="POST">
+  <form action="/guess" method="POST">
     <label>Guess</label>
     <input type="text" name="guess" />
+    <input type="hidden" name="_csrf_token" value={get_csrf_token()} />
     <button type="submit">Submit</button>
   </form>
+</div>
 </div>
