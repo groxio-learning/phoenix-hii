@@ -9,9 +9,7 @@ defmodule Words.Game do
 
   @impl true
   def init([]) do
-    random_answer = Dictionary.random_answer()
 
-    {:ok, Board.new(random_answer)}
   end
 
   @impl true

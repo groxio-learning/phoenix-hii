@@ -2,8 +2,8 @@ import Config
 
 # Configure your database
 config :birdle, Birdle.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: "aydan",
+  password: "aydan",
   hostname: "localhost",
   database: "birdle_dev",
   stacktrace: true,
